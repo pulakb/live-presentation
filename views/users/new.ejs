@@ -1,0 +1,22 @@
+<h1><%= title %></h1>
+
+/*
+	When user clicks submit button for sign-up call, "/auth/signup". It is set up in routes/authentication.
+	
+*/
+
+<div id="layout-login-content">
+<form name="login" method="post" action="/auth/login">
+	<div class="form-row">
+		<label for="username" class="required" style="padding-top:10px;">Username</label>
+		<input type="text" name="username" value="" id="username" class="text inpt">
+	</div>
+	<div class="form-row">
+		<label for="password" class="required">Password</label>
+		<input type="password" name="password" value="" id="password" class="inpt">
+	</div>
+	<div>
+		<input type="submit" value="submit" />
+	</div>
+</form>
+</div>
