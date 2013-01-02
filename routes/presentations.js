@@ -6,8 +6,12 @@
 		4. Modify presentation
 		5. Delete a presentation
 */
-module.exports = function (app) {
-	app.get('/presentations', function (req, res) {
-		res.render('presentations/index');
-	});
+var presentations = module.exports = function presentations(){};
+ 
+presentations.prototype = { 
+	init: function(app){
+		app.get('/presentations', function (req, res) {
+			res.render('presentations/index');
+		});
+	}
 };

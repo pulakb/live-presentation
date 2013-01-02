@@ -14,8 +14,7 @@ var users = module.exports = function users(){};
  
 users.prototype = {
  
-	init: function(app){
-	
+	init: function(app){	
 		//Lists all the users
 		app.get('/users', function (req, res) {
 			res.render('users/index');

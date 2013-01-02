@@ -8,17 +8,20 @@
 */
 
 //Load the class "authenticate" from "helpers" directory
-var authenticate = require('../helpers/authenticate'),
-	auth = new authenticate();
+var authenticate = require('../helpers/authenticate');
+var _self;
 
-module.exports = function (app) {
-	//Sign-Up activities
-	app.post('/auth/signup', function (req, res, next) {
-		auth.signUp(req, res, next);
-	});
+var authentication = module.exports = function authentication(){
+	_self = this;
+	_self.auth = new authenticate();
+};
+ 
+authentication.prototype = { 
+	init: function(app){
+		//Sign-Up activities
+		app.post('/auth/signup', _self.auth.signup);
 
-	//Login activities
-	app.post('/auth/login', function (req, res, next) {
-		 auth.login(req,res,next);
-	});
+		//Login activities
+		app.post('/auth/login', _self.auth.login);
+	}
 };

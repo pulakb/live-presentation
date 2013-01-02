@@ -37,16 +37,21 @@ app.configure('production', function () {
 });
 
 /*
-  set the routes & pass the application instance -- need to chanege the code for authentication, presentations
-  as it is done for users
+  set the routes & pass the application instance.
 */
 require('./routes/index')(app);
-require('./routes/authentication')(app);
-require('./routes/presentations')(app);
 
 var users = require('./routes/users');
-var uobj = new users();
-uobj.init(app);
+var uObj = new users();
+uObj.init(app);
+
+var authentication = require('./routes/authentication');
+var auObj = new authentication();
+auObj.init(app);
+
+var presentations = require('./routes/presentations');
+var preObj = new presentations();
+preObj.init(app);
 
 //Bind & listen for a connection
 app.listen(3000, function(){
