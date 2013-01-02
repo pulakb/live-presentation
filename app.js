@@ -7,12 +7,6 @@ var passport = require('passport');
 //create application instance
 var app = module.exports = express();
 
-//set the routes & pass the application instance
-require('./routes/index')(app);
-require('./routes/users')(app);
-require('./routes/authentication')(app);
-require('./routes/presentations')(app);
-
 //set up middleware
 app.configure(function(){
   app.set('port', process.env.PORT || 3000);
@@ -41,6 +35,18 @@ app.configure('development', function () {
 app.configure('production', function () {
   app.use(express.errorHandler());
 });
+
+/*
+  set the routes & pass the application instance -- need to chanege the code for authentication, presentations
+  as it is done for users
+*/
+require('./routes/index')(app);
+require('./routes/authentication')(app);
+require('./routes/presentations')(app);
+
+var users = require('./routes/users');
+var uobj = new users();
+uobj.init(app);
 
 //Bind & listen for a connection
 app.listen(3000, function(){

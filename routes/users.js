@@ -8,47 +8,55 @@
 */
 
 //Load the JSON data (Can be fetched from db)
-var users = require('../data/users');
+var user_data = require('../data/users.json');
 
-module.exports = function (app) {
-	//Lists all the users
-	app.get('/users', function (req, res) {
-		res.render('users/index');
-	});
-
-	//A specific user profile
-	app.get('/users/:name', function (req, res, next) {
-		/*
-			Get the user details from the db and pass those data to the template. If user
-			does not exist, the control is passed back to the middleware engine, which in 
-			this case will render a "Not found" message.
-		*/
-		var user = users[req.params.name];
-		if (user) {
-			res.render('users/profile', {title: 'User Profile', user_first_name: user.username});			
-		} else {
-			next();
-		}
-	});
-
-	//Create a new user by presenting a form with a sbmit button
-	app.get('/users/new', function (req, res) {
-		res.render('users/new', {title: 'New User'});
-	});
+var users = module.exports = function users(){};
+ 
+users.prototype = {
+ 
+	init: function(app){
 	
-	/*
-		Delete a user. Only users with Admin rights can delete a user. It will be soft delete, not
-		physical delete from DB. He will be deactivated in the system.
-	*/
-	app.del('/users/:name', function (req, res, next) {
+		//Lists all the users
+		app.get('/users', function (req, res) {
+			res.render('users/index');
+		});
+
+		//A specific user profile
+		app.get('/users/:name', function (req, res, next) {
+			/*
+				Get the user details from the db and pass those data to the template. If user
+				does not exist, the control is passed back to the middleware engine, which in 
+				this case will render a "Not found" message.
+			*/
+
+			var user_obj = user_data[req.params.name];
+						
+			if (user_obj) {
+				res.render('users/profile', {title: 'User Profile', user_first_name: user_obj.name});			
+			} else {
+				next();
+			}
+		});
+
+		//Create a new user by presenting a form with a sbmit button
+		app.get('/users/new', function (req, res) {
+			res.render('users/new', {title: 'New User'});
+		});
+		
 		/*
-			Check the user from DB first, if exists, delete it.
+			Delete a user. Only users with Admin rights can delete a user. It will be soft delete, not
+			physical delete from DB. He will be deactivated in the system.
 		*/
-		if (users[req.params.name]) {
-			delete users[req.params.name];
-			res.redirect('/users');
-		} else {
-			next();
-		}
-	});
+		app.del('/users/:name', function (req, res, next) {
+			/*
+				Check the user from DB first, if exists, delete it.
+			*/
+			if (users[req.params.name]) {
+				delete users[req.params.name];
+				res.redirect('/users');
+			} else {
+				next();
+			}
+		});	
+	}	
 };
